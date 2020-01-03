@@ -7,4 +7,4 @@
     <title> <?= $title ?? 'Titre par défaut' ?> </title>
 </head>
 
-<body>
+<body class="bg-gray-100">

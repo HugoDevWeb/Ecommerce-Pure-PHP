@@ -1,5 +1,5 @@
 <?php
-require_once('../../bootstrap.php');
+require_once(__DIR__.'/../../bootstrap.php');
 
 
 if ($_SESSION['admin'] ?? null) {
@@ -15,40 +15,53 @@ if (is_post()) {
         $_SESSION['admin'] = $admin;
         redirect('/admin/dashboard.php');
     } else {
-        $errors["credentials"] = "Identifiant incorrectes";
+        $_SESSION['previous_errors']['credentials'] = 'Identifiants incorrects';
+        $_SESSION['previous_inputs']["name"] = $_POST["name"];
+        redirect('/admin/login.php');
     }
 }
 
 ?>
 
 
+
+
+
 <?php partial('header', ['title' => 'Connexion Admin']) ?>
 
+<div class="w-screen h-screen bg-gray-100 flex justify-center items-center">
+    <div class="bg-white shadow-lg p-8">
+        <h1 class="text-xl mb-4">Connexion Admin</h1>
+
+        <form action="" method="post">
+            <?php if(isset($previous_errors['credentials'])): ?>
+                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 p-2">
+                    <?=  $previous_errors["credentials"]?>
+                </p>
+            <?php endif ?>
+
+            <p class="mb-3">
+                <label for="name" class="block text-sm px-3 mb-px">Nom:</label>
+                <input type="text" name="name" autocomplete="false" id="name" required class="border focus:border-black px-3 py-1 w-full"
+                value="<?= $previous_inputs['name'] ?? "" ?>">
+            </p>
+
+            <p class="mb-3">
+                <label for="password" class="block text-sm px-3 mb-px">Password:</label>
+                <input type="password" name="password" id="password" required class="border focus:border-black px-3 py-1 w-full">
+            </p>
+
+            <p class="mt-6">
+                <button class="w-full border py-1">Connexion</button>
+            </p>
+        </form>
+    </div>
 
 
-<h1>Connexion Admin</h1>
 
-<form action="" method="post">
-    <?php if(isset($errors['credentials'])): ?>
-    <p>
-        <?= $errors["credentials"] ?>
-    </p>
-    <?php endif ?>
+</div>
 
-    <p>
-        <label for="name">Nom:</label>
-        <input type="text" name="name" autocomplete="false" id="name" required>
-    </p>
 
-    <p>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-    </p>
-
-    <p>
-        <button>Connexion</button>
-    </p>
-</form>
 
 
 

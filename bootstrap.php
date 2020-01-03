@@ -1,14 +1,25 @@
 <?php
 
 ini_set('display_errors', 1);
+
 session_start();
+
+if (is_post()) {
+    $previous_errors = [];
+    $previous_inputs = [];
+} else {
+    $previous_errors = $_SESSION['previous_errors'] ?? [];
+    $previous_inputs = $_SESSION['previous_inputs'] ?? [];
+    $_SESSION['previous_errors'] = [];
+    $_SESSION['previous_inputs'] = [];
+}
+
+
 function partial($name, $params = [])
 {
     extract($params);
     require (__DIR__ . "/html_partials/{$name}.html.php");
 }
-
-
 
 function is_post(){
     return $_SERVER["REQUEST_METHOD"] === "POST";

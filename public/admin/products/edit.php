@@ -16,6 +16,11 @@ if (is_post()) {
         "description" => ["required"]
     ]);
 
+    if (! $product){
+        abord_404();
+    }
+
+
     $query = pdo()->prepare('UPDATE products SET name = ?, description = ? WHERE id = ?');
     $query->execute([$_POST['name'], $_POST["description"], $product->id]);
     redirect("/admin/products/edit.php?id={$product->id}");

@@ -49,6 +49,7 @@ function redirect_unless_admin(){
 
 function abord_404(){
     http_response_code(404);
+    echo "Error 404, page not found";
     die();
 }
 

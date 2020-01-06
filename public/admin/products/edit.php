@@ -4,7 +4,6 @@ require_once(__DIR__ . '/../../../bootstrap.php');
 redirect_unless_admin();
 import("products");
 
-
 $query = pdo()->prepare("SELECT * FROM products WHERE id = ?");
 $query->execute([$_GET['id']]);
 $query->setFetchMode(PDO::FETCH_CLASS, Product::class);
@@ -12,23 +11,14 @@ $product = $query->fetch();
 
 if (is_post()) {
 
-    if (empty($_POST["name"])) {
-        $_SESSION['previous_errors']["name"] = "Le nom du produit est requis";
+    validate([
+        "name" => ["required"],
+        "description" => ["required"]
+    ]);
 
-    }
-
-    if (empty($_POST["description"])){
-        $_SESSION['previous_errors']["description"] = "La description du produit est requise";
-    }
-
-    if (!empty($_SESSION["previous_errors"])){
-        save_inputs();
-        redirect('/admin/products/add.php');
-    }
-
-    $query = pdo()->prepare('INSERT INTO products (name, description) VALUES(?, ?)');
-    $query->execute([$_POST['name'], $_POST["description"]]);
-    redirect('/admin/products/index.php');
+    $query = pdo()->prepare('UPDATE products SET name = ?, description = ? WHERE id = ?');
+    $query->execute([$_POST['name'], $_POST["description"], $product->id]);
+    redirect("/admin/products/edit.php?id={$product->id}");
 }
 
 
@@ -57,9 +47,7 @@ if (is_post()) {
 
         <div class="mb-3 max-w-sm">
             <label for="description" class="block text-sm px-3 mb-px">Description:</label>
-            <textarea name="description" id="description" class="border focus:border-black px-3 py-1 w-full h-32" >
-                <?= $previous_inputs['description'] ?? $product->description ?>
-            </textarea>
+            <textarea name="description" id="description" class="border focus:border-black px-3 py-1 w-full h-32" ><?= $previous_inputs['description'] ?? $product->description ?></textarea>
             <?php if(isset($previous_errors['description'])): ?>
                 <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
                     <?=  $previous_errors["description"]?>

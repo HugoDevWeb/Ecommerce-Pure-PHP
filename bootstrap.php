@@ -37,6 +37,10 @@ function redirect($url){
     die();
 }
 
+function redirect_self(){
+    redirect($_SERVER["REQUEST_URI"]);
+}
+
 function redirect_unless_admin(){
     if (!($_SESSION["admin"] ?? null)) {
         redirect('/admin/login.php');
@@ -72,4 +76,4 @@ function save_inputs(){
     }
 }
 
-?>
+import('validation');

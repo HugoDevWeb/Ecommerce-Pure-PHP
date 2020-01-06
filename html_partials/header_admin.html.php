@@ -1,5 +1,10 @@
 <?php partial('header', ["title" => "$title - Admin"]) ?>
 
+<?php
+import('flash')
+
+?>
+
 <div class="flex max-w-5xl w-full mx-auto mt-8">
     <nav class="mr-6 w-48 flex-shrink-0">
         <div class="-my-1">
@@ -25,4 +30,11 @@
         </div>
     </nav>
 
-    <main class="bg-white shadow-xl p-8 w-full">
+    <main class="bg-white shadow-xl p-8 w-full relative">
+        <?php if ($flash = get_flash()): ?>
+        <div class="absolute right-0">
+            <p class="shadow-lg -mt-12 max-w-sm <?=$flash['type'] === "success" ? 'bg-green-100 text-green-900' : '' ?>">
+                <?= $flash["message"] ?>
+            </p>
+        </div>
+        <?php endif ?>

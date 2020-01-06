@@ -1,17 +1,23 @@
 <?php
 
 ini_set('display_errors', 1);
+set_error_handler(function ($severity, $message, $file, $line) {
+    throw new \ErrorException($severity, $message, $file, $line);
+});
 
 session_start();
 
 if (is_post()) {
     $previous_errors = [];
     $previous_inputs = [];
+    $flash = null;
 } else {
     $previous_errors = $_SESSION['previous_errors'] ?? [];
     $previous_inputs = $_SESSION['previous_inputs'] ?? [];
     $_SESSION['previous_errors'] = [];
     $_SESSION['previous_inputs'] = [];
+
+    $flash = $_SESSION['flash'] ?? null;
 }
 
 

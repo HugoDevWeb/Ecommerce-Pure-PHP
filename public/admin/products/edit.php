@@ -3,6 +3,7 @@
 require_once(__DIR__ . '/../../../bootstrap.php');
 redirect_unless_admin();
 import("products");
+import("flash");
 
 $query = pdo()->prepare("SELECT * FROM products WHERE id = ?");
 $query->execute([$_GET['id']]);
@@ -23,6 +24,8 @@ if (is_post()) {
 
     $query = pdo()->prepare('UPDATE products SET name = ?, description = ? WHERE id = ?');
     $query->execute([$_POST['name'], $_POST["description"], $product->id]);
+
+    flash_success("le produit a bien été modifié");
     redirect("/admin/products/edit.php?id={$product->id}");
 }
 

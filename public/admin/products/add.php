@@ -3,6 +3,7 @@
 require_once(__DIR__ . '/../../../bootstrap.php');
 redirect_unless_admin();
 import("validation");
+import("flash");
 
 if (is_post()) {
     validate([
@@ -12,6 +13,8 @@ if (is_post()) {
 
     $query = pdo()->prepare('INSERT INTO products (name, description) VALUES(?, ?)');
     $query->execute([$_POST['name'], $_POST["description"]]);
+
+    flash_success("Le produit a bien été ajouté");
     redirect('/admin/products/index.php');
 }
 

@@ -33,7 +33,7 @@ import('flash')
     <main class="bg-white shadow-xl p-8 w-full relative">
         <?php if ($flash = get_flash()): ?>
         <div class="absolute right-0">
-            <p class="shadow-lg -mt-12 max-w-sm <?=$flash['type'] === "success" ? 'bg-green-100 text-green-900' : '' ?>">
+            <p class="shadow-lg -mt-12 p-3 -mr-3 py-3 max-w-sm <?=$flash['type'] === "success" ? 'bg-green-100 text-green-900' : '' ?>">
                 <?= $flash["message"] ?>
             </p>
         </div>

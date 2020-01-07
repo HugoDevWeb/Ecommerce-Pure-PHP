@@ -14,7 +14,7 @@ if (is_post()) {
     $query = pdo()->prepare('INSERT INTO products (name, description) VALUES(?, ?)');
     $query->execute([$_POST['name'], $_POST["description"]]);
 
-    flash_success("Le produit a bien été ajouté");
+    flash_success("Le produit -{$_POST["name"]}-  a bien été ajouté");
     redirect('/admin/products/index.php');
 }
 

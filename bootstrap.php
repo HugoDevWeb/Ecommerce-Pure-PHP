@@ -32,9 +32,14 @@ function is_post(){
 }
 
 function pdo(){
+
+    static $pdo;
+    if ($pdo){
+        return $pdo;
+    }
+
     $pdo = new PDO("mysql:host=localhost;dbname=coton", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     return $pdo;
 }
 
@@ -58,7 +63,6 @@ function abord_404(){
     echo "Error 404, page not found";
     die();
 }
-
 
 
 function is_on_page($page){

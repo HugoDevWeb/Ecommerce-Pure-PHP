@@ -7,19 +7,26 @@ import("categories");
 
 
 
-$product = find_product($_GET["id"]);
+$product = find_product($_GET["slug"]);
 $categories = get_all_categories();
 
 if (is_post()) {
+    $slug = slugify($_POST["slug"]);
 
     validate([
         "category_id" => ["required"],
+        "slug" => ["required", function() use ($slug) {
+            if (find_product_or_null($slug)){
+                return "ce nom est déjà utilisé";
+            }
+        }],
         "name" => ["required"],
         "description" => ["required"]
     ]);
 
-    $query = pdo()->prepare('UPDATE products SET name = ?, description = ?, category_id  = ? WHERE id = ?');
-    $query->execute([$_POST['name'], $_POST["description"], $_POST["category_id"] ,$product->id]);
+
+    $query = pdo()->prepare('UPDATE products SET name = ?, description = ?, slug = ?, category_id  = ? WHERE id = ?');
+    $query->execute([$_POST['name'], $_POST["description"], $slug, $_POST["category_id"] ,$product->id]);
 
     flash_success("le produit -{$_POST["name"]}- a bien été modifié");
     redirect("/admin/products/index.php");

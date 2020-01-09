@@ -89,7 +89,7 @@ function get_previous_input($key){
 function slugify($string){
 
     $lower = string_to_lower($string);
-    $allowed_characters = '\-a-zA-Z' . implode(array_keys(french_weird_characters()));
+    $allowed_characters = '\-a-zA-Z0-9' . implode(array_keys(french_weird_characters()));
     $clean = preg_replace("/[^$allowed_characters]/", '-', $lower);
 
     return preg_replace('![-\s]+!u', '-', $clean);
@@ -120,3 +120,4 @@ function french_weird_characters(){
 import('validation');
 import("flash");
 import("database");
+import("products");

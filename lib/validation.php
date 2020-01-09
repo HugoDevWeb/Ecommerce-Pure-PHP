@@ -26,8 +26,14 @@ function validate($rules){
     foreach ($rules as $key => $validations) {
         $value = $_POST[$key] ?? null;
         foreach ($validations as $validation) {
-            $validation_function = "validate_{$validation}";
-            $error = $validation_function($value);
+
+            if (is_callable($validation)){
+                $error = $validation($value);
+            } else {
+                $validation_function = "validate_{$validation}";
+                $error = $validation_function($value);
+
+            }
 
             if ($error) {
                 $_SESSION["previous_errors"] = $_SESSION["previous_errors"] ?? null;

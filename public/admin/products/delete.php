@@ -6,7 +6,7 @@ import("products");
 
 
 if (is_post()){
-    $product = find_product($_GET["id"]);
+    $product = find_product($_GET["slug"]);
 
     $query = pdo()->prepare('DELETE FROM products WHERE id= ?');
     $query->execute([$product->id]);

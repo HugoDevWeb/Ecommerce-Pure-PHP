@@ -14,10 +14,14 @@ if (is_post()) {
     ]);
 
 
-    $slug = slugify($_POST["name"]);
-    var_dump($slug); die();
-    $query = pdo()->prepare('INSERT INTO products (name, category_id, description, slug) VALUES(?, ?, ?, "")');
-    $query->execute([$_POST['name'], $_POST['category_id'], $_POST["description"]]);
+    $slug = $base_slug = slugify($_POST["name"]);
+    $i = 1 ;
+    while ($product = find_product_or_null($slug)){
+        $i++;
+        $slug = "{$base_slug}-{$i}";
+    }
+    $query = pdo()->prepare('INSERT INTO products (name, category_id, description, slug) VALUES(?, ?, ?, ?)');
+    $query->execute([$_POST['name'], $_POST['category_id'], $_POST["description"], $slug]);
 
     flash_success("Le produit -{$_POST["name"]}-  a bien été ajouté");
     redirect('/admin/products/index.php');

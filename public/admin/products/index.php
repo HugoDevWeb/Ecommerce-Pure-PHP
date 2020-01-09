@@ -23,9 +23,9 @@ $products = $query->fetchAll(PDO::FETCH_CLASS, Product::class)
         <h2 class="text-lg"> <?= $product->name ?> </h2>
         <p> <?= $product->description ?> </p>
         <div class="-mx-2 flex border-t pt-1 mt-1">
-            <a href="/admin/products/edit.php?id=<?= $product->id ?>" class="mx-2">Modifier</a>
+            <a href="/admin/products/edit.php?slug=<?= $product->slug ?>" class="mx-2">Modifier</a>
 
-            <form method="post" action="/admin/products/delete.php?id=<?= $product->id ?>" >
+            <form method="post" action="/admin/products/delete.php?slug=<?= $product->slug ?>" >
                 <button class="mx-2">Supprimer</button>
             </form>
         </div>

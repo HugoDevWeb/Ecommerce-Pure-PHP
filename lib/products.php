@@ -6,16 +6,21 @@ class Product
 {
     public $id;
     public $name;
+    public $slug;
     public $description;
     public $category_id;
 }
 
-function find_product($id) : Product
+function find_product($slug) : Product
 {
-    $query = pdo()->prepare("SELECT * FROM products WHERE id= ?");
+    return  find_product_or_null($slug) ?? abord_404();
+
+}
+
+function find_product_or_null($slug){
+    $query = pdo()->prepare("SELECT * FROM products WHERE slug= ?");
     $query->setFetchMode(PDO::FETCH_CLASS, Product::class);
-    $query->execute([$id]);
+    $query->execute([$slug]);
 
     return $query->fetch() ?? abord_404();
-
 }

@@ -33,6 +33,7 @@ if (is_post()) {
 
     <form action="" method="post">
         <?= partial('admin_input', ["label" => 'Nom', "name" => "name", "model" => $product]) ?>
+        <?= partial('admin_input', ["label" => 'Nom simplifié (utilisé dans les liens)', "name" => "slug", "model" => $product]) ?>
 
         <?= partial('admin_textarea', ["label" => 'Description', "name" => "description", "model" => $product]) ?>
 

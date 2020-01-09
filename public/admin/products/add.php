@@ -13,9 +13,9 @@ if (is_post()) {
         "description" => ["required"]
     ]);
 
-//
-//    $slug = slugify("La gigoteuse trop géniale !! ÉÉÉ");
-//    var_dump($slug);
+
+    $slug = slugify($_POST["name"]);
+    var_dump($slug); die();
     $query = pdo()->prepare('INSERT INTO products (name, category_id, description, slug) VALUES(?, ?, ?, "")');
     $query->execute([$_POST['name'], $_POST['category_id'], $_POST["description"]]);
 

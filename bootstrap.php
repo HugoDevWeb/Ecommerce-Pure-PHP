@@ -1,8 +1,15 @@
 <?php
 
+define("START_MICROTIME", microtime(true));
+
 ini_set('display_errors', 1);
 set_error_handler(function ($severity, $message, $file, $line) {
     throw new \ErrorException($severity, $message, $file, $line);
+});
+
+register_shutdown_function(function () {
+    $time = round((microtime(true) - START_MICROTIME) * 1000, 3);
+    file_put_contents("php://stderr", "Exec time: {$time}ms" );
 });
 
 session_start();
@@ -80,12 +87,32 @@ function get_previous_input($key){
 }
 
 function slugify($string){
-    return $string;
+
+    $lower = string_to_lower($string);
+    $allowed_characters = '\-a-zA-Z' . implode(array_keys(french_weird_characters()));
+    $clean = preg_replace("/[^$allowed_characters]/", '-', $lower);
+
+    return preg_replace('![-\s]+!u', '-', $clean);
 }
 
-function accents(){
+function string_to_lower($string){
+
+
+    return mb_strtolower(str_replace(array_values(french_weird_characters()), array_keys(french_weird_characters()), $string));
+}
+
+
+
+
+function french_weird_characters(){
     return [
-        'é' => "É"
+        'é' => 'É',
+        'è' => 'È',
+        'à' => 'À',
+        'ç' => 'Ç',
+        'ê' => 'Ê',
+        'œ' => 'Œ',
+        'ù' => 'Ù'
     ];
 }
 

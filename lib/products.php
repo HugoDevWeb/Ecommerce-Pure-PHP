@@ -17,10 +17,10 @@ function find_product($slug) : Product
 
 }
 
-function find_product_or_null($slug){
+function find_product_or_null($slug) : ?Product{
     $query = pdo()->prepare("SELECT * FROM products WHERE slug= ?");
     $query->setFetchMode(PDO::FETCH_CLASS, Product::class);
     $query->execute([$slug]);
 
-    return $query->fetch() ?? abord_404();
+    return $query->fetch() ?: null;
 }

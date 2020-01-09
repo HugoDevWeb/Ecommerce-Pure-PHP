@@ -7,6 +7,7 @@ class Product
     public $id;
     public $name;
     public $description;
+    public $category_id;
 }
 
 function find_product($id) : Product

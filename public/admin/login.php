@@ -34,16 +34,16 @@ if (is_post()) {
         <h1 class="text-xl mb-4">Connexion Admin</h1>
 
         <form action="" method="post">
-            <?php if(isset($previous_errors['credentials'])): ?>
+            <?php if(get_previous_error("category_id")): ?>
                 <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 p-2">
-                    <?=  $previous_errors["credentials"]?>
+                    <?= get_previous_error("category_id") ?>
                 </p>
             <?php endif ?>
 
             <p class="mb-3">
                 <label for="name" class="block text-sm px-3 mb-px">Nom:</label>
                 <input type="text" name="name" autocomplete="false" id="name" required class="border focus:border-black px-3 py-1 w-full"
-                value="<?= $previous_inputs['name'] ?? "" ?>">
+                value="<?= get_previous_input("name")?>">
             </p>
 
             <p class="mb-3">

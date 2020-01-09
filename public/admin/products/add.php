@@ -2,17 +2,22 @@
 
 require_once(__DIR__ . '/../../../bootstrap.php');
 redirect_unless_admin();
-import("validation");
-import("flash");
+import("categories");
+
+$categories = get_all_categories();
 
 if (is_post()) {
     validate([
+        "category_id" => ["required"],
         "name" => ["required"],
         "description" => ["required"]
     ]);
 
-    $query = pdo()->prepare('INSERT INTO products (name, description) VALUES(?, ?)');
-    $query->execute([$_POST['name'], $_POST["description"]]);
+//
+//    $slug = slugify("La gigoteuse trop géniale !! ÉÉÉ");
+//    var_dump($slug);
+    $query = pdo()->prepare('INSERT INTO products (name, category_id, description, slug) VALUES(?, ?, ?, "")');
+    $query->execute([$_POST['name'], $_POST['category_id'], $_POST["description"]]);
 
     flash_success("Le produit -{$_POST["name"]}-  a bien été ajouté");
     redirect('/admin/products/index.php');
@@ -33,11 +38,11 @@ if (is_post()) {
             <label for="name" class="block text-sm px-3 mb-px">Nom:</label>
             <input type="text" name="name" autocomplete="false" id="name"
                    class="border focus:border-black px-3 py-1 w-full"
-                   value="<?= $previous_inputs['name'] ?? "" ?>" >
+                   value="<?= get_previous_input("name") ?>" >
 
-            <?php if (isset($previous_errors['name'])): ?>
+            <?php if (get_previous_error("name")): ?>
                 <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
-                    <?= $previous_errors["name"] ?>
+                    <?= get_previous_error("name") ?>
                 </p>
             <?php endif ?>
 
@@ -45,10 +50,24 @@ if (is_post()) {
 
         <div class="mb-3 max-w-sm">
             <label for="description" class="block text-sm px-3 mb-px">Description:</label>
-            <textarea name="description" id="description" class="border focus:border-black px-3 py-1 w-full h-32"><?= $previous_inputs['description'] ?? "" ?></textarea>
-            <?php if (isset($previous_errors['description'])): ?>
+            <textarea name="description" id="description" class="border focus:border-black px-3 py-1 w-full h-32"><?= get_previous_input('description') ?></textarea>
+            <?php if (get_previous_error("description")): ?>
                 <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
-                    <?= $previous_errors["description"] ?>
+                    <?= get_previous_error("description") ?>
+                </p>
+            <?php endif ?>
+        </div>
+
+        <div class="mb-3 max-w-sm">
+            <label for="category_id" class="block text-sm px-3 mb-px">Catégorie:</label>
+            <select name="category_id" id="category_id" class="border focus:border-black px-3 py-1 w-full">
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?= $category->id ?>"> <?= $category->name ?></option>
+                <?php endforeach ?>
+            </select>
+            <?php if (get_previous_error("category_id")): ?>
+                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
+                    <?= get_previous_error("category_id") ?>
                 </p>
             <?php endif ?>
         </div>

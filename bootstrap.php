@@ -7,40 +7,14 @@ set_error_handler(function ($severity, $message, $file, $line) {
 
 session_start();
 
-if (is_post()) {
-    $previous_errors = [];
-    $previous_inputs = [];
-    $flash = null;
-} else {
-    $previous_errors = $_SESSION['previous_errors'] ?? [];
-    $previous_inputs = $_SESSION['previous_inputs'] ?? [];
-    $_SESSION['previous_errors'] = [];
-    $_SESSION['previous_inputs'] = [];
-
-    $flash = $_SESSION['flash'] ?? null;
-}
-
-
-function partial($name, $params = [])
+function partial($__name, $params = [])
 {
     extract($params);
-    require (__DIR__ . "/html_partials/{$name}.html.php");
+    require (__DIR__ . "/html_partials/{$__name}.html.php");
 }
 
 function is_post(){
     return ($_SERVER["REQUEST_METHOD"] ?? "CLI") === "POST";
-}
-
-function pdo(){
-
-    static $pdo;
-    if ($pdo){
-        return $pdo;
-    }
-
-    $pdo = new PDO("mysql:host=localhost;dbname=coton", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $pdo;
 }
 
 function redirect($url){
@@ -83,8 +57,39 @@ function save_inputs(){
         if (in_array($key, ['password'])) {
             continue;
         }
+        $_SESSION["previous_inputs"] = $_SESSION["previous_inputs"] ?? [];
         $_SESSION['previous_inputs'][$key] = $value;
     }
 }
 
+
+function get_previous_inputs(){
+    static $previous_inputs;
+
+    if ($previous_inputs){
+        return $previous_inputs;
+    }
+
+    $previous_inputs = $_SESSION["previous_inputs"] ?? null;
+    $_SESSION["previous_inputs"] = [];
+    return $previous_inputs;
+}
+
+function get_previous_input($key){
+    return get_previous_inputs()[$key] ?? null;
+}
+
+function slugify($string){
+    return $string;
+}
+
+function accents(){
+    return [
+        'é' => "É"
+    ];
+}
+
+
 import('validation');
+import("flash");
+import("database");

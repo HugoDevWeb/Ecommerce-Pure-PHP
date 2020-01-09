@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/../../../bootstrap.php');
 redirect_unless_admin();
 import("products");
-import("flash");
+
 
 if (is_post()){
     $product = find_product($_GET["id"]);

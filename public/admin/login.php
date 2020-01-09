@@ -34,22 +34,13 @@ if (is_post()) {
         <h1 class="text-xl mb-4">Connexion Admin</h1>
 
         <form action="" method="post">
-            <?php if(get_previous_error("category_id")): ?>
-                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 p-2">
-                    <?= get_previous_error("category_id") ?>
-                </p>
-            <?php endif ?>
 
-            <p class="mb-3">
-                <label for="name" class="block text-sm px-3 mb-px">Nom:</label>
-                <input type="text" name="name" autocomplete="false" id="name" required class="border focus:border-black px-3 py-1 w-full"
-                value="<?= get_previous_input("name")?>">
-            </p>
+            <?= partial("admin_form_error", ["name" => "credentials"]) ?>
 
-            <p class="mb-3">
-                <label for="password" class="block text-sm px-3 mb-px">Password:</label>
-                <input type="password" name="password" id="password" required class="border focus:border-black px-3 py-1 w-full">
-            </p>
+            <?= partial('admin_input', ["label" => 'Nom', "name" => "name"]) ?>
+
+            <?= partial('admin_input', ["type" => "password", "label" => 'Password', "name" => "password"]) ?>
+
 
             <p class="mt-6">
                 <button class="w-full border py-1">Connexion</button>

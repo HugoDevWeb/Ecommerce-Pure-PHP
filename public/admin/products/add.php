@@ -34,43 +34,11 @@ if (is_post()) {
     <h1 class="text-xl mb-4">Ajouter un produit</h1>
 
     <form action="" method="post">
-        <div class="mb-3 max-w-sm">
-            <label for="name" class="block text-sm px-3 mb-px">Nom:</label>
-            <input type="text" name="name" autocomplete="false" id="name"
-                   class="border focus:border-black px-3 py-1 w-full"
-                   value="<?= get_previous_input("name") ?>" >
+        <?= partial('admin_input', ["label" => 'Nom', "name" => "name"]) ?>
 
-            <?php if (get_previous_error("name")): ?>
-                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
-                    <?= get_previous_error("name") ?>
-                </p>
-            <?php endif ?>
+        <?= partial('admin_textarea', ["label" => 'Description', "name" => "description"]) ?>
 
-        </div>
-
-        <div class="mb-3 max-w-sm">
-            <label for="description" class="block text-sm px-3 mb-px">Description:</label>
-            <textarea name="description" id="description" class="border focus:border-black px-3 py-1 w-full h-32"><?= get_previous_input('description') ?></textarea>
-            <?php if (get_previous_error("description")): ?>
-                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
-                    <?= get_previous_error("description") ?>
-                </p>
-            <?php endif ?>
-        </div>
-
-        <div class="mb-3 max-w-sm">
-            <label for="category_id" class="block text-sm px-3 mb-px">Catégorie:</label>
-            <select name="category_id" id="category_id" class="border focus:border-black px-3 py-1 w-full">
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?= $category->id ?>"> <?= $category->name ?></option>
-                <?php endforeach ?>
-            </select>
-            <?php if (get_previous_error("category_id")): ?>
-                <p class="border border-red-900 w-full bg-red-100 text-red-900 mb-4 mt-2 p-1">
-                    <?= get_previous_error("category_id") ?>
-                </p>
-            <?php endif ?>
-        </div>
+        <?= partial('admin_select_model', ["label" => 'Categorie', "name" => "category_id", "options" => $categories, "option_key_label" => 'name']) ?>
 
         <p class="mt-6 max-w-sm">
             <button class="w-full border py-1">Ajouter</button>

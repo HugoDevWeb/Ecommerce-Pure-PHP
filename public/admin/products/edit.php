@@ -38,10 +38,6 @@ if (is_post()) {
 
         <?= partial('admin_select_model', ["label" => 'Categorie', "name" => "category_id", "model" => $product, "options" => $categories, "option_key_label" => 'name']) ?>
 
-
-
-
-
         <p class="mt-6 max-w-sm">
             <button class="w-full border py-1">Modifier</button>
         </p>
